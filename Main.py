@@ -19,7 +19,7 @@ def retryMenu():
                 repetirMenu=False
                 return False
         except:
-            print("opcion incorrecta selecionar Y o N")
+            print("opcion incorrecta selecionar 'Y' o 'N'")
 
 
 
