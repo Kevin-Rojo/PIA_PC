@@ -1,5 +1,6 @@
 import requests
 import re
+import socket
 
 url = input("Ingrese la url: ")
 # Se revisa el estado la pagina
@@ -8,7 +9,7 @@ if req.status_code != 200:
     exit()
 
 # Se utilizan las expresiones regulares para la busqueda de correos
-RegEx = "[a-z0-9\.\-+_]+@([a-z0-9\.\-+_]+\.[a-z]+)"
+RegEx = "[a-z0-9\.\-+_]+@[a-z0-9\.\-+_]+\.[a-z]+"
 # re.findall busca todas las coincidencias posibles en la secuencia anterior
 # .text convierte el codigo html a texto legible
 emails = set(re.findall(RegEx, req.text, re.I))
@@ -23,10 +24,13 @@ else:
     f = open("correos.txt", "w")
     for i in emails:
 
-        regDominio=re.compile(r"([a-z0-9\.\-+_]+@)([a-z0-9\.\-+_]+\.[a-z]+)")
+        regDominio=re.compile(r'([a-z0-9\.\-+_]+)[@]([a-z0-9\.\-+_]+\.[a-z]+)')
         dominio=regDominio.search(i)
-        print(type(dominio))
-        f.write(i + "\n")
-
+        print(i)
+        try:
+            print(socket.gethostbyname(dominio.group(2)))
+            f.write(i + "\t"+ dominio.group(2) + "\t"+ socket.gethostbyname(dominio.group(2)) + "\n")
+        except:
+            print("Dominio invalido")
     f.close()
     print("\n Hecho")
