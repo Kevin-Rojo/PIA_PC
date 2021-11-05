@@ -2,6 +2,9 @@ import os
 import openpyxl
 import argparse
 import time
+import subprocess
+
+
 
 
 # Funcion para preguntar si se quiere realizar otra accion
@@ -22,6 +25,11 @@ def retryMenu():
             print("opcion incorrecta selecionar 'Y' o 'N'")
 
 
+
+def status_port(ip,ports):
+   command = f"powershell .\puertos.ps1 -ipaddress {ip} -port {ports}"
+   res = subprocess.run(command, stdout=subprocess.PIPE)
+   print(res)
 
 
 
@@ -85,7 +93,9 @@ if __name__ == "__main__":
                 validateMenu=retryMenu()
             elif opcion==5:
                 print("opcion 5")
-                #inicio de opcion 5
+                ip = input("Ingrese IP: ")
+                ports = input("Ingrese el puerto: ")
+                status_port(ip,ports)
 
                 validateMenu=retryMenu()
             elif opcion==6:

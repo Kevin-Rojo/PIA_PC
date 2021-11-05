@@ -22,7 +22,7 @@ from urllib import request
 #       re              filePatron      Expresion regular para detectar URLs con Archivos de Tipo(pdf,excel,word,               #
 #                                       powerponit, base de datos sql y texto)                                                  #
 #       re              patronGroups    Almacena el resultado del analisis de la expresion regular                              #
-#
+#                                                                                                                               #
 #################################################################################################################################
 def GetWebDcumentsURL(url:str)->list:
     #Peticion a la URL y lectura del HTML en un objeto de BeautifulSoup
@@ -41,10 +41,12 @@ def GetWebDcumentsURL(url:str)->list:
             listOfDocs.remove(doc)
     Archivos=[]
     for doc in listOfDocs:
+
         filePatron=re.compile(r"(.+[a-z0-9]\/)+(.+\.(pdf|docx|doc|PDF|xlsx|xls|ppt|txt|sql))")
         patronGroups=filePatron.search(doc)
         print(doc)
         print(patronGroups.group(2))
+
         dir="DocumentosExtraidos\\"+patronGroups.group(2)
         myfile = requests.get(doc, allow_redirects=True)
         open(dir, 'wb').write(myfile.content)
@@ -100,4 +102,4 @@ def GetWebDcumentsListURL(urlDir:str)->list:
     #se regresa lista de listas para guardar el reporte FORMATO [URL1[Archivos1[],Archivos2[],],URL2[],...,URLn[],]
     return ListaArchivosTotales
 
-GetWebDcumentsListURL("C:\\Users\\DCI\Documents\\GitHub\\PIA_PC\\listaUrls.txt")
+GetWebDcumentsListURL("I:\\FCFM\\Github\\PIA_PC\\listaUrls.txt")
