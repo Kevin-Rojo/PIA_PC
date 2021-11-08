@@ -4,7 +4,8 @@ import argparse
 import time
 import subprocess
 
-
+import puertos
+import EnvioCorreo
 
 
 # Funcion para preguntar si se quiere realizar otra accion
@@ -25,39 +26,87 @@ def retryMenu():
             print("opcion incorrecta selecionar 'Y' o 'N'")
 
 
-
+#funcion analisis de puertos
 def status_port(ip,ports):
-   command = f"powershell .\puertos.ps1 -ipaddress {ip} -port {ports}"
-   res = subprocess.run(command, stdout=subprocess.PIPE)
-   print(res)
-
+    command = f"powershell .\puertos.ps1 -ipaddress {ip} -port {ports}"
+    res = subprocess.run(command, stdout=subprocess.PIPE)
+    print(res)
 
 
 if __name__ == "__main__":
 
-    description = """Ejecucion automatica: Main.py | Ejecucion manual: Main.py -mode Manual"""
-    parser = argparse.ArgumentParser(description="script", epilog=description)
-    parser.add_argument("-mode", dest="mode", help="Designa el modo de ejecucion", default="Auto")
-    params = parser.parse_args() 
-    print(params.mode)
+    description = """Metodos de Ejeccion:
+    [1].- WEB SCRAPING(Extraer emails de un sitio web)
+    -Execution Example:main.py -op 1 -url "URL" -R "RUTA(ruta donde se almacenaran las imagenes)"
 
-    input()
-    if params.mode=="Auto":
-        #codigo para ejecucion en automatico
-        print("paso 1")
-        time.sleep(5)
-        print("paso 2")
-        time.sleep(5)
-        print("paso 3")
-        time.sleep(5)
-        print("paso 4")
-        time.sleep(5)
-        print("paso 5")
-        time.sleep(5)
-        print("paso 6")
+    [2].- Descarga De Documentos (Analizar metadatos de Imagenes)
+    -Execution Example:main.py -op 2  -R "RUTA"
+    
+    [3].- ESCANEO CON SOCKET(Detecta los puertos si estan abiertos o cerrados)
+    -Execution Example:main.py -op 3 -ip "IP" -begin "30" -end "50"
+    
+    [4].- IDENTIFICAR TECNOLOGIA DE WEBSITE(Ingresa un sitio web que desas analizar)
+    -Execution Example:main.py -op 4 -url "URL"
+
+    [5].- EXTRAER INFORMACION DE UN DOMINIO(Script para buscar información sobre un dominio)
+    -Execution Example:main.py -op 5 -api "APIKEY" -organizacion "ORGANIZACION"
+    
+    [6].- OBTENCIÓN DE CLAVES HASH(Obtener la calve Hash de un carpeta) 
+    -Execution Example:main.py -op 6 -R "RUTA"
+    
+    """
+    parser = argparse.ArgumentParser(description="script", epilog=description)
+
+    #parametros para ejecucion de script
+    parser.add_argument("-mode", dest="mode", help="Designa el modo de ejecucion", default="Auto")
+    parser.add_argument("-script", dest="script", help="Selecciona el script a Ejecutar individualmente")
+    
+    #Parametros Para Funcion EnvioCorreo.py
+    parser.add_argument("--e", type=str,required=True,help="Destinatario")
+    parser.add_argument("--m", type=str,required=True,help="Mensaje de correo")
+
+    #Parametros Para Funcion DocumentGatering
+    parser.add_argument("-source", dest="FilePath", help="Directorio de Urls")
+
+    #parametros Para Funcion Puertos
+    parser.add_argument("-ip", dest="ip",help="Direccion IP a Analizar")
+    parser.add_argument("-port", dest="port",help="Puertos a analzar")
+
+    #Parametros Para Funcion VirusTotal
+
+    params = parser.parse_args()
+    print(params.mode)
+    print(description)
+
+    if params.mode=="Auto" and params.script=="Email":
+        #codigo para ejecucion en automatico de Email
+        EnvioCorreo(args)
+        validateMenu=False
+    elif params.mode=="Auto" and params.script=="Documents":
+        print("2")
+
+        validateMenu=False
+    elif params.mode=="Auto" and params.script=="WebMail":
+        print("3")
+
+        validateMenu=False
+    elif params.mode=="Auto" and params.script=="VirusTotal":
+        print("4")
+
+        validateMenu=False
+    elif params.mode=="Auto" and params.script=="ports":
+
+        status_port(params.ip,params.port)
+
         validateMenu=False
     elif params.mode=="Manual":
         validateMenu=True
+    else:
+        print("parametros incorrectos...")
+        print("saliendo")
+        time.sleep(3)
+        validateMenu=False
+    
 
     try:
         while validateMenu:
