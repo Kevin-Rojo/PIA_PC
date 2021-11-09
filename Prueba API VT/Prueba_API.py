@@ -1,5 +1,6 @@
 from typing import Callable
 import base64
+import time
 
 import os
 import json
@@ -24,20 +25,33 @@ from virus_total_apis.api import ApiError
 with open('encode_APIKEY.txt', "r") as f:
     API_KEY = f.readline()
     print(type(API_KEY))
-    API_KEY = hashlib.md5(API_KEY.encode())
+    API_KEY = base64.b64decode(API_KEY)
+
+print(API_KEY.decode("utf-8")[1:])
+
+def EscaneoDeArchivos(Direcotrio,API_KEY):
+    archivos=os.listdir(Direcotrio)
+    for archivo in archivos:
+        print(archivo)
+        try:
+            full_Directorio=r""+str(Direcotrio)+"\\"+str(archivo)
+            with open(full_Directorio, "rb") as f:
+                hash_Archivo = hashlib.md5(f.read()).hexdigest()
+
+            vt = VirusTotalPublicApi(API_KEY.decode("utf-8")[1:])
+
+            respuesta = vt.get_file_report(hash_Archivo)
+            print(json.dumps(respuesta, sort_keys=False, indent=4))
 
 
-print(API_KEY)
+            if respuesta['response_code'] == 200:
+                if respuesta['results']['response_code'] == 0:
+                    print("archivo no disponible en la base de datos, puesto en cola para analisis publico")
+                else:
+                    if respuesta['results']['positives'] > 1:
+                        print("malware")
+        except Exception as e:
+            print("ocurrio un error: " + str(e))
+        time.sleep(25)
 
-input()
-with open('../../archivo de prueba/NoVirus.txt', "rb") as f:
-    file_hash = hashlib.md5(f.read()).hexdigest()
-
-vt = VirusTotalPublicApi(API_KEY)
-
-response = vt.get_file_report(file_hash)
-print(json.dumps(response, sort_keys=False, indent=4))
-
-
-if response['results']['positives'] > (response['results']['total']/2):
-    print("malware")
+EscaneoDeArchivos("C:\\Users\\DCI\\Documents\\GitHub\\",API_KEY)
