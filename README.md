@@ -22,13 +22,13 @@ Producto Integrador de Aprendizaje Programación Para Ciberseguridad
 ##### Kevin Samuel Rojo Ortega
 * **Correo:** kevin.rojoor@uanl.edu.mx
 ##### Ramon Gilberto Valdez Escareño
-* **Correo:** kevin.rojoor@uanl.edu.mx
+* **Correo:** ramon.valdezes@uanl.edu.mx
 ##### Alan Damian Garcia Torres
-* **Correo:** kevin.rojoor@uanl.edu.mx
-##### Kevin Samuel Rojo Ortega
-* **Correo:** kevin.rojoor@uanl.edu.mx
-##### Kevin Samuel Rojo Ortega
-* **Correo:** kevin.rojoor@uanl.edu.mx
+* **Correo:** damian.garciatrrs@uanl.edu.mx
+##### Juan Angel Rodriguez Bulnes
+* **Correo:** juan.rodriguezblns@uanl.edu.mx
+##### Jairo Ivan Hernandez Hernandez
+* **Correo:** jairo.hernandezhdz@uanl.edu.mx
 
 
 
