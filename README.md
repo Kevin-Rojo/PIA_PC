@@ -32,30 +32,29 @@ python main.py -mode Manual
 ```
 ### Ejecucion Automatica con Parametros
 
-#### Envio de Correos puishing
+#### Envio de Correos pishing
 ```
 python main.py -script
-
 ```
+
 #### Descarga de Documentos
 ```
 python main.py -script
-
 ```
+
 #### Analisis de Puertos
 ```
 python main.py -script
-
 ```
+
 #### Web Scraping de Correos
 ```
 python main.py -script
-
 ```
+
 #### Envio de correos
 ```
 python main.py -script
-
 ```
 
 
