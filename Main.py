@@ -3,10 +3,13 @@ import openpyxl
 import argparse
 import time
 import subprocess
+import re
+import socket
 
-import puertos
 import EnvioCorreo
-
+import AnalisisArchivos
+import DocumentGatering
+import BusquedaCorreosDoc
 
 # Funcion para preguntar si se quiere realizar otra accion
 def retryMenu():
@@ -36,65 +39,62 @@ def status_port(ip,ports):
 if __name__ == "__main__":
 
     description = """Metodos de Ejeccion:
-    [1].- WEB SCRAPING(Extraer emails de un sitio web)
-    -Execution Example:main.py -op 1 -url "URL" -R "RUTA(ruta donde se almacenaran las imagenes)"
-
-    [2].- Descarga De Documentos (Analizar metadatos de Imagenes)
-    -Execution Example:main.py -op 2  -R "RUTA"
-    
-    [3].- ESCANEO CON SOCKET(Detecta los puertos si estan abiertos o cerrados)
-    -Execution Example:main.py -op 3 -ip "IP" -begin "30" -end "50"
-    
-    [4].- IDENTIFICAR TECNOLOGIA DE WEBSITE(Ingresa un sitio web que desas analizar)
-    -Execution Example:main.py -op 4 -url "URL"
-
-    [5].- EXTRAER INFORMACION DE UN DOMINIO(Script para buscar información sobre un dominio)
-    -Execution Example:main.py -op 5 -api "APIKEY" -organizacion "ORGANIZACION"
-    
-    [6].- OBTENCIÓN DE CLAVES HASH(Obtener la calve Hash de un carpeta) 
-    -Execution Example:main.py -op 6 -R "RUTA"
-    
+    [1]Phishing
     """
+
+
     parser = argparse.ArgumentParser(description="script", epilog=description)
 
     #parametros para ejecucion de script
     parser.add_argument("-mode", dest="mode", help="Designa el modo de ejecucion", default="Auto")
-    parser.add_argument("-script", dest="script", help="Selecciona el script a Ejecutar individualmente")
+    parser.add_argument("-script", dest="script", help="Selecciona el script a Ejecutar individualmente", default="all")
     
     #Parametros Para Funcion EnvioCorreo.py
-    parser.add_argument("--e", type=str,required=True,help="Destinatario")
-    parser.add_argument("--m", type=str,required=True,help="Mensaje de correo")
+    parser.add_argument("-dest", dest="dest", type=str,help="Destinatario")
 
     #Parametros Para Funcion DocumentGatering
-    parser.add_argument("-source", dest="FilePath", help="Directorio de Urls")
+    parser.add_argument("-source", dest="FilePath", help="Directorio de Urls", default="listaUrls.txt")
 
     #parametros Para Funcion Puertos
-    parser.add_argument("-ip", dest="ip",help="Direccion IP a Analizar")
-    parser.add_argument("-port", dest="port",help="Puertos a analzar")
+    parser.add_argument("-ip", dest="ip",help="Direccion IP a Analizar", default="192.168.1.1")
+    parser.add_argument("-port", dest="port",help="Puertos a analzar", default="8080")
 
     #Parametros Para Funcion VirusTotal
+    parser.add_argument("-path", dest="dir",help="Directorio a Analizar")
+
+    #Parametros Para Funcion BusquedaEmails
+    parser.add_argument("-url", dest="url",help="Directorio a Analizar")
 
     params = parser.parse_args()
-    print(params.mode)
-    print(description)
+    
+    # validateMenu=False=No mostrar el menu para ejecucion manual
 
     if params.mode=="Auto" and params.script=="Email":
+
         #codigo para ejecucion en automatico de Email
-        EnvioCorreo(args)
+        EnvioCorreo.EnvioCorreo(params.dest.split(","))
         validateMenu=False
     elif params.mode=="Auto" and params.script=="Documents":
         print("2")
-
+        DocumentGatering.GetWebDcumentsListURL(params.FilePath)
         validateMenu=False
     elif params.mode=="Auto" and params.script=="WebMail":
-        print("3")
+        
+        BusquedaCorreosDoc.AnalisisCorreos(params.url)
 
         validateMenu=False
     elif params.mode=="Auto" and params.script=="VirusTotal":
-        print("4")
+        try:
+            AnalisisArchivos.EscaneoDeArchivos(params.dir)
+        except Exception as e:
+            print(e)
+        validateMenu=False
+    elif params.mode=="Auto" and params.script=="Ports":
+
+        status_port(params.ip,params.port)
 
         validateMenu=False
-    elif params.mode=="Auto" and params.script=="ports":
+    elif params.mode=="Auto" and params.script=="all":
 
         status_port(params.ip,params.port)
 
@@ -102,9 +102,9 @@ if __name__ == "__main__":
     elif params.mode=="Manual":
         validateMenu=True
     else:
-        print("parametros incorrectos...")
-        print("saliendo")
-        time.sleep(3)
+        print("Faltan Parametros Ejemplos de uso:")
+        print(description)
+        time.sleep(5)
         validateMenu=False
     
 
@@ -155,7 +155,7 @@ if __name__ == "__main__":
             elif opcion==7:
                 print("Saliendo...")
                 validateMenu=False
-    except:
+    except Exception as e:
         print("MODO DE EJECUCION INCORRECTO!")
         print(description)
         input("Presione cualquier tecla para continuar")

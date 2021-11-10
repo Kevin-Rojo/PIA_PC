@@ -1,4 +1,3 @@
-from typing import Callable
 import base64
 import time
 
@@ -16,7 +15,8 @@ def decriptAPI():
         API_KEY=API_KEY.decode("utf-8")[1:]
         return API_KEY
 
-def EscaneoDeArchivos(Direcotrio,API_KEY):
+def EscaneoDeArchivos(Direcotrio):
+    API_KEY=decriptAPI()
     archivos=os.listdir(Direcotrio)
     for archivo in archivos:
         print(archivo)
@@ -30,7 +30,6 @@ def EscaneoDeArchivos(Direcotrio,API_KEY):
             respuesta = vt.get_file_report(hash_Archivo)
             print(json.dumps(respuesta, sort_keys=False, indent=4))
 
-
             if respuesta['response_code'] == 200:
                 if respuesta['results']['response_code'] == 0:
                     print("archivo no disponible en la base de datos, puesto en cola para analisis publico")
@@ -40,6 +39,3 @@ def EscaneoDeArchivos(Direcotrio,API_KEY):
         except Exception as e:
             print("ocurrio un error: " + str(e))
         time.sleep(25)
-
-API_KEY=decriptAPI()
-EscaneoDeArchivos("C:\\Users\\DCI\\Documents\\GitHub\\",API_KEY)

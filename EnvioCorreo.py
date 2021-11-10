@@ -50,6 +50,3 @@ def EnvioCorreo(dest):
         print(e)
     finally:
         server.quit()
-
-list=["uririsa@gmail.com","kevin.rojoor@gmail.com","krojo_10@hotmail.com"]
-EnvioCorreo(list)

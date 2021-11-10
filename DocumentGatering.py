@@ -73,50 +73,54 @@ import re
 #       re              patronGroups    Almacena el resultado del analisis de la expresion regular                              #
 #                                                                                                                               #
 #################################################################################################################################
+
+
 def GetWebDcumentsURL(url:str)->list:
+
     #Peticion a la URL y lectura del HTML en un objeto de BeautifulSoup
     html = requests.get(url)
     soup = bs(html.content, 'html.parser')
     #Se define le expresion regulrar para la busqueda de archivos conformada por 3 grupos (URL)(nombre del documento(Tipo de archivo))
 
     #   (URL)(NombreArchivo(tipo de Archivo))
-    a= soup.find_all(href=re.compile("(.+[a-z0-9]\/)+(.+\.(pdf|docx|doc|PDF|xlsx|xls|ppt|txt|sql))"))#etiqueta < href="">
+    links= soup.find_all(href=re.compile("(.+[a-z0-9]\/)+(.+\.(pdf|docx|doc|PDF|xlsx|xls|ppt|txt|sql))"))#etiqueta < href="">
 
     #   [<a1>['href'="link1"], <a2>['href'="link2"], <a3>['href'="link3"]]  href=ruta del documento
-    listOfDocs=[]# Aqui se guardan los links para la descarga
-    for document in a:
-        listOfDocs.append(document['href'])
+    lista_Documentos=[]# Aqui se guardan los links para la descarga
+    for document in links:
+        lista_Documentos.append(document['href'])
     
-    # listOfDocs=[ruta1, ruta2 , ruta3, ruta1]
+    # lista_Documentos=[ruta1, ruta2 , ruta3, ruta1]
     #Limpia documentos Repetidos
-    for doc in listOfDocs:
-        while listOfDocs.count(doc)!=1:
-            listOfDocs.remove(doc)
-    # listOfDocs=[ruta2 , ruta3, ruta1]
+    for documento in lista_Documentos:
+        while lista_Documentos.count(documento)!=1:
+            lista_Documentos.remove(documento)
+    # lista_Documentos=[ruta2 , ruta3, ruta1]
 
 
 
-    Archivos=[]
-
-    #ruta donde se guarda el documento
-    for doc in listOfDocs:
-
+    Archivos=[] #Almacena la informacion de los documentos descargados [[url,nombre del archivo, tipo del archivo],...]
+    
+    #en este ciclo se copian todos los documentos encntrados en la lista "lista_Documentos" y se guardan en la carpeta DocumentosExtraidos
+    for documento in lista_Documentos:
+        
+        #se declara la expresion regulrar para separar la informacion en 3 grupos:
+        #grupo1="ruta del archivo(link)" grupo2="nombre del archivo con extension" groupo3="extension del archivo"
         filePatron=re.compile(r"(.+[a-z0-9]\/)+(.+\.(pdf|docx|doc|PDF|xlsx|xls|ppt|txt|sql))")
 
-        patronGroups=filePatron.search(doc)
+        #busca el patron dentro de la ruta completa donde se encuentra el documento
+        patronGroups=filePatron.search(documento)
 
-        print(doc)
-        print(patronGroups.group(2))
-
+        #nombra la ruta donde se guardara el archivo en este caso es /DocumentosExtraidos/NombreDelArchivo.Extension
         dir="DocumentosExtraidos\\"+patronGroups.group(2) #ruta y nombre del archivo a copiar
 
-        myfile = requests.get(doc, allow_redirects=True)
+        documento_descargado = requests.get(documento, allow_redirects=True)
 
 
-        open(dir, 'wb').write(myfile.content)
+        open(dir, 'wb').write(documento_descargado.content)
         #[URL, NombreDeArchivo, Tipo]
-        tempList = [doc,patronGroups.group(2),patronGroups.group(3)]
-        ##tempDict={'URL':doc,'FileName':patronGroups.group(2),'FileType':patronGroups.group(3)}
+        tempList = [documento,patronGroups.group(2),patronGroups.group(3)]
+
         Archivos.append(tempList)
 
     print(len(Archivos))
@@ -137,16 +141,16 @@ def GetWebDcumentsListURL(urlDir:str)->list:
 
         a= soup.find_all(href=re.compile("(.+[a-z0-9]\/)+(.+\.(pdf|docx|doc|PDF|xlsx|xls|ppt|txt|sql))"))
 
-        listOfDocs=[]
+        lista_Documentos=[]
         for document in a:
-            listOfDocs.append(document['href'])
+            lista_Documentos.append(document['href'])
 
-        for doc in listOfDocs:
-            while listOfDocs.count(doc)!=1:
-                listOfDocs.remove(doc)
+        for doc in lista_Documentos:
+            while lista_Documentos.count(doc)!=1:
+                lista_Documentos.remove(doc)
 
         Archivos=[]
-        for doc in listOfDocs:
+        for doc in lista_Documentos:
             filePatron=re.compile(r"(.+[a-z0-9]\/)+(.+\.(pdf|docx|doc|PDF|xlsx|xls|ppt|txt|sql))")
             patronGorups=filePatron.search(doc)
             print(doc)
@@ -168,4 +172,3 @@ def GetWebDcumentsListURL(urlDir:str)->list:
     #se regresa lista de listas para guardar el reporte FORMATO [URL1[Archivos1[],Archivos2[],],URL2[],...,URLn[],]
     return ListaArchivosTotales
 
-GetWebDcumentsListURL("I:\\FCFM\\Github\\PIA_PC\\listaUrls.txt")

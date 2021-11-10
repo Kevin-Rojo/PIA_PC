@@ -32,7 +32,7 @@ python main.py -mode Manual
 
 #### Envio de Correos pishing
 ```
-python main.py -script Email
+python main.py -script Email -dest [correo1,correo2,correo3]
 ```
 
 #### Descarga de Documentos
@@ -42,7 +42,7 @@ python main.py -script Documents
 
 #### Analisis de Puertos
 ```
-python main.py -script Ports
+python main.py -script Ports -ip [host:default="192.168.1.1"] -port [ports:default="8080"]
 ```
 
 #### Web Scraping de Correos
