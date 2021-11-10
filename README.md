@@ -20,14 +20,7 @@ Producto Integrador de Aprendizaje Programación Para Ciberseguridad
 <a name="contacto"></a>
 ## Contacto
 ***
-A list of frequently asked questions
-1. **This is a question in bold**
-Answer of the first question with _italic words_. 
-2. __Second question in bold__ 
-To answer this question we use an unordered list:
-* First point
-* Second Point
-* Third point
+###Kevin Samuel Rojo Ortega
 3. **Third question in bold**
 Answer of the third question with *italic words*.
 4. **Fourth question in bold**
