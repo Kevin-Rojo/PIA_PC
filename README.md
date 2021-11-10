@@ -1,6 +1,4 @@
 # PIA_PC
-Producto Integrador de Aprendizaje Programación Para Ciberseguridad
-
 
 ## Table of Contents
 1. [Informacion General](#general-info)
@@ -34,27 +32,27 @@ python main.py -mode Manual
 
 #### Envio de Correos pishing
 ```
-python main.py -script
+python main.py -script Email
 ```
 
 #### Descarga de Documentos
 ```
-python main.py -script
+python main.py -script Documents
 ```
 
 #### Analisis de Puertos
 ```
-python main.py -script
+python main.py -script Ports
 ```
 
 #### Web Scraping de Correos
 ```
-python main.py -script
+python main.py -script WebMail
 ```
 
 #### Analsis de Archivos con API Virus Total
 ```
-python main.py -script
+python main.py -script VirusTotal
 ```
 
 
