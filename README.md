@@ -20,16 +20,16 @@ Conjunto de Herramientas basadas en Python y powershell para la ayuda de proceso
 
 ## Ejemplos de Uso
 <a name="ejemplos"></a>
-#### Ejecucion desatendida
+### Ejecucion desatendida
 ```
 python main.py
-
 ```
-#### Ejecucion Manual
+
+### Ejecucion Manual
 ```
 python main.py -mode Manual
-
 ```
+
 ### Ejecucion Automatica con Parametros
 
 #### Envio de Correos pishing
@@ -52,7 +52,7 @@ python main.py -script
 python main.py -script
 ```
 
-#### Envio de correos
+#### Analsis de Archivos con API Virus Total
 ```
 python main.py -script
 ```
