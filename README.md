@@ -20,7 +20,7 @@ Conjunto de Herramientas basadas en Python y powershell para la ayuda de proceso
 
 ## Ejemplos de Uso
 <a name="ejemplos"></a>
-####S Ejecucion desatendida
+#### Ejecucion desatendida
 ```
 python main.py
 
@@ -28,6 +28,33 @@ python main.py
 #### Ejecucion Manual
 ```
 python main.py -mode Manual
+
+```
+#### Ejecucion Automatica con Parametros
+
+#### Envio de Correos puishing
+```
+python main.py -
+
+```
+#### Descarga de Documentos
+```
+python main.py -
+
+```
+#### Analisis de Puertos
+```
+python main.py -
+
+```
+#### Web Scraping de Correos
+```
+python main.py -
+
+```
+#### Envio de correos
+```
+python main.py -
 
 ```
 
