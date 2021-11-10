@@ -20,7 +20,11 @@ Conjunto de Herramientas basadas en Python y powershell para la ayuda de proceso
 
 ## Ejemplos de Uso
 <a name="ejemplos"></a>
-### ejemplos de uso
+### Ejecucion desatendida
+```
+python main.py
+
+```
 
 
 
