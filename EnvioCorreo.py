@@ -1,44 +1,55 @@
+from os import close
 import smtplib
 import ssl
 import argparse
 from email.mime.text import MIMEText
+import base64
 
-# parser = argparse.ArgumentParser()
-# parser.add_argument("--e", type=str,required=True,help="Destinatario")
-# parser.add_argument("--m", type=str,required=True,help="Mensaje de correo")
-# args=parser.parse_args()
+def decriptPassword(passw):
+    password = passw
+    print(type(password))
+    password = base64.b64decode(password)
+    password=password.decode("utf-8")
+    return password
 
+def EnvioCorreo(dest):
 
-def EnvioCorreo(dest,msg):
     e = dest
-    m= open(msg,'r')
     
+    with open("EmailConfig.txt") as f:
+        lineas = f.readlines()
 
-    sender_email="ksrojo31@gmail.com"
-    password="BattleField4"
+    m=open(lineas[2].split(":")[1],"rb")
+
+    sender_email=lineas[0].split(":")[1]
+    password=decriptPassword(lineas[1].split(":")[1])
+
+    print(sender_email)
+
     smtp_server="smtp.gmail.com"
     port = 587  # For starttls
     context = ssl.create_default_context()
-
     mail_postfix = "gmail.com"
 
     me = "hola" + "<" + sender_email + "@" + mail_postfix + ">" 
-    msg = MIMEText(m.read(), _subtype = 'html', _charset = 'gb2312') # Cree una instancia, aquí configurada en formato de correo html
-    msg ['Asunto'] = "Sotify" # establecer asunto
+    msg = MIMEText(m.read(), _subtype = 'html', _charset = 'UTF-8') # Cree una instancia, aquí configurada en formato de correo html
+    msg ['Subject'] = "Spotify" # establecer asunto
     msg['From'] = me
     msg['To'] = ";".join(e)
-    print(msg)
+
     try:
         server = smtplib.SMTP(smtp_server, port)
         server.ehlo() # Can be omitted
         server.starttls(context=context) # Secure the connection
         server.ehlo() # Can be omitted
+        print("haciendo Loggin")
         server.login(sender_email, password)
-        server.sendmail(me, e, msg.as_string())
+        for mail in e:
+            server.sendmail(me, mail, msg.as_string())
     except Exception as e:
         print(e)
     finally:
         server.quit()
 
-list=["kevin.rojoor@gmail.com"]
-EnvioCorreo(list, "mail.html")
+list=["uririsa@gmail.com","kevin.rojoor@gmail.com","krojo_10@hotmail.com"]
+EnvioCorreo(list)

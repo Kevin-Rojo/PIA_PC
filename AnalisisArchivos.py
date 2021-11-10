@@ -8,26 +8,13 @@ import hashlib
 from virus_total_apis import PublicApi as VirusTotalPublicApi
 from virus_total_apis.api import ApiError
 
-#path_file = input("ingrese la ubicacion del archivo a analizar")
-
-#print(os.listdir('I:\FCFM\GitHub\PIA_PC\Prueba API VT\API'))
-
-#def encode_decode_bytes(
-#    byte_message: bytes, encode_fn: Callable[[bytes], bytes]
-#) -> bytes:
-#    return encode_fn(byte_message)
-
-#def decode_file(path: str) -> bytes:    
-#    file_to_encode = open(path, "rb")
-#    return encode_decode_bytes(file_to_encode.read(), base64.b64decode)
-
-
-with open('encode_APIKEY.txt', "r") as f:
-    API_KEY = f.readline()
-    print(type(API_KEY))
-    API_KEY = base64.b64decode(API_KEY)
-
-print(API_KEY.decode("utf-8")[1:])
+def decriptAPI():
+    with open('APIKEY.txt', "r") as f:
+        API_KEY = f.readline()
+        print(type(API_KEY))
+        API_KEY = base64.b64decode(API_KEY)
+        API_KEY=API_KEY.decode("utf-8")[1:]
+        return API_KEY
 
 def EscaneoDeArchivos(Direcotrio,API_KEY):
     archivos=os.listdir(Direcotrio)
@@ -38,7 +25,7 @@ def EscaneoDeArchivos(Direcotrio,API_KEY):
             with open(full_Directorio, "rb") as f:
                 hash_Archivo = hashlib.md5(f.read()).hexdigest()
 
-            vt = VirusTotalPublicApi(API_KEY.decode("utf-8")[1:])
+            vt = VirusTotalPublicApi(API_KEY)
 
             respuesta = vt.get_file_report(hash_Archivo)
             print(json.dumps(respuesta, sort_keys=False, indent=4))
@@ -54,4 +41,5 @@ def EscaneoDeArchivos(Direcotrio,API_KEY):
             print("ocurrio un error: " + str(e))
         time.sleep(25)
 
+API_KEY=decriptAPI()
 EscaneoDeArchivos("C:\\Users\\DCI\\Documents\\GitHub\\",API_KEY)
