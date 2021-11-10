@@ -18,7 +18,7 @@ Producto Integrador de Aprendizaje Programación Para Ciberseguridad
 
 
 <a name="contacto"></a>
-## FAQs
+## Contacto
 ***
 A list of frequently asked questions
 1. **This is a question in bold**
@@ -31,6 +31,7 @@ To answer this question we use an unordered list:
 3. **Third question in bold**
 Answer of the third question with *italic words*.
 4. **Fourth question in bold**
+
 | Headline 1 in the tablehead | Headline 2 in the tablehead | Headline 3 in the tablehead |
 |:--------------|:-------------:|--------------:|
 | text-align left | text-align center | text-align right |
