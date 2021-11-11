@@ -31,9 +31,10 @@ def retryMenu():
 
 #funcion analisis de puertos
 def status_port(ip,ports):
-    command = f"powershell .\puertos.ps1 -ipaddress {ip} -port {ports}"
-    res = subprocess.run(command, stdout=subprocess.PIPE)
-    print(res)
+    for port in ports:
+        command = f"powershell .\puertos.ps1 -ipaddress {ip} -port {int(port)}"
+        res = subprocess.run(command, stdout=subprocess.PIPE)
+        print(res)
 
 
 if __name__ == "__main__":
@@ -41,8 +42,6 @@ if __name__ == "__main__":
     description = """Metodos de Ejeccion:
     [1]Phishing
     """
-
-
     parser = argparse.ArgumentParser(description="script", epilog=description)
 
     #parametros para ejecucion de script
@@ -57,7 +56,7 @@ if __name__ == "__main__":
 
     #parametros Para Funcion Puertos
     parser.add_argument("-ip", dest="ip",help="Direccion IP a Analizar", default="192.168.1.1")
-    parser.add_argument("-port", dest="port",help="Puertos a analzar", default="8080")
+    parser.add_argument("-port", dest="port",help="Puertos a analzar", default="8080,80")
 
     #Parametros Para Funcion VirusTotal
     parser.add_argument("-path", dest="dir",help="Directorio a Analizar")
@@ -87,11 +86,11 @@ if __name__ == "__main__":
         try:
             AnalisisArchivos.EscaneoDeArchivos(params.dir)
         except Exception as e:
-            print(e)
+            print("Lo senimos ha ocurrido un error: " + e)
         validateMenu=False
     elif params.mode=="Auto" and params.script=="Ports":
 
-        status_port(params.ip,params.port)
+        status_port(params.ip,params.port.split(","))
 
         validateMenu=False
     elif params.mode=="Auto" and params.script=="all":
@@ -107,7 +106,6 @@ if __name__ == "__main__":
         time.sleep(5)
         validateMenu=False
     
-
     try:
         while validateMenu:
             validateOpcion=True

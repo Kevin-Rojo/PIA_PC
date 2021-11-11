@@ -16,7 +16,7 @@ def EnvioCorreo(dest):
 
     e = dest
     
-    with open("EmailConfig.txt") as f:
+    with open("Config.txt") as f:
         lineas = f.readlines()
 
     m=open(lineas[2].split(":")[1],"rb")
