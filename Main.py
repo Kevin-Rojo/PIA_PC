@@ -48,14 +48,20 @@ def menu():
 
 def reporteExcel(lista):
     wb = Workbook()
-    dest_filename = 'empty_book.xlsx'
     ws = wb.active
+    titulo=("URL Analizada","URL Archivo","Nombre Archivo","Extension")
+    ws.append(titulo)
     for documentos in lista:
-        print(documentos)
-        for documento in documentos:
-            print(documento)
-            ws.append(documento)
-    
+        print(documentos[0])
+        for documento in documentos[1]:
+            print("")
+            print(documento[0])
+            print(documento[1])
+            print(documento[2])
+            temp_tuple=(documentos[0],documento[0],documento[1],documento[2])
+            print(temp_tuple)
+            ws.append(temp_tuple)
+    wb.save("ReporteDocuemntos.xlsx")
 
 if __name__ == "__main__":
 
@@ -178,21 +184,20 @@ if __name__ == "__main__":
                     print("A courrido un error: " + str(e))
                 validateMenu=retryMenu()
             elif opcion==3:
-                print("opcion 3")
-                #inicio de opcion 3
-
+                url= input("Ingrese un url: ")
+                BusquedaCorreosDoc.AnalisisCorreos(url)
                 validateMenu=retryMenu()
             elif opcion==4:
-                print("opcion 4")
-                #inicio de opcion 4
+
+                dir=input("ingrese un directorio a analaisar: ")
+                AnalisisArchivos.EscaneoDeArchivos(dir)
 
                 validateMenu=retryMenu()
             elif opcion==5:
                 print("opcion 5")
                 ip = input("Ingrese IP: ")
-                ports = input("Ingrese el puerto: ")
-                status_port(ip,ports)
-
+                ports = input("Ingrese los puertos separados por comas [10,20,30]: ")
+                status_port(ip,ports.split(","))
                 validateMenu=retryMenu()
             elif opcion==6:
                 print("Saliendo...")
