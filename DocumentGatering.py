@@ -123,7 +123,6 @@ def GetWebDcumentsURL(url:str)->list:
 
         Archivos.append(tempList)
 
-    print(len(Archivos))
     if len(Archivos)>0:
         return Archivos
     else:
@@ -154,7 +153,6 @@ def GetWebDcumentsListURL(urlDir:str)->list:
             filePatron=re.compile(r"(.+[a-z0-9]\/)+(.+\.(pdf|docx|doc|PDF|xlsx|xls|ppt|txt|sql))")
             patronGorups=filePatron.search(doc)
             print(doc)
-            print(patronGorups.group(2))
             dir="DocumentosExtraidos\\"+patronGorups.group(2)
             myfile = requests.get(doc, allow_redirects=True)
             open(dir, 'wb').write(myfile.content)
@@ -162,7 +160,7 @@ def GetWebDcumentsListURL(urlDir:str)->list:
             tempList = [doc,patronGorups.group(2),patronGorups.group(3)]
             #BORRAR#    tempDict={'URL':doc,'FileName':patronGorups.group(2),'FileType':patronGorups.group(3)}
             Archivos.append(tempList)
-        print(len(Archivos))
+
         if len(Archivos)>0:
             tempList=[url,Archivos]
             ListaArchivosTotales.append(tempList)

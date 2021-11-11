@@ -1,11 +1,10 @@
 import os
-import openpyxl
-import argparse
+from openpyxl import Workbook
 import time
 import subprocess
 import re
 import socket
-
+import argparse
 import EnvioCorreo
 import AnalisisArchivos
 import DocumentGatering
@@ -47,6 +46,17 @@ def menu():
     print("6. Salir")
 
 
+def reporteExcel(lista):
+    wb = Workbook()
+    dest_filename = 'empty_book.xlsx'
+    ws = wb.active
+    for documentos in lista:
+        print(documentos)
+        for documento in documentos:
+            print(documento)
+            ws.append(documento)
+    
+
 if __name__ == "__main__":
 
     description = """Metodos de Ejeccion:
@@ -83,9 +93,13 @@ if __name__ == "__main__":
         #codigo para ejecucion en automatico de Email
         EnvioCorreo.EnvioCorreo(params.dest.split(","))
         validateMenu=False
+
     elif params.mode=="Auto" and params.script=="Documents":
         print("2")
-        DocumentGatering.GetWebDcumentsListURL(params.FilePath)
+        document=DocumentGatering.GetWebDcumentsListURL(params.FilePath)
+
+        #reporte Excel
+        reporteExcel(document)
         validateMenu=False
     elif params.mode=="Auto" and params.script=="WebMail":
         

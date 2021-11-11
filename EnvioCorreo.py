@@ -24,8 +24,6 @@ def EnvioCorreo(dest):
     sender_email=lineas[0].split(":")[1]
     password=decriptPassword(lineas[1].split(":")[1])
 
-    print(sender_email)
-
     smtp_server="smtp.gmail.com"
     port = 587  # For starttls
     context = ssl.create_default_context()
@@ -42,7 +40,6 @@ def EnvioCorreo(dest):
         server.ehlo() # Can be omitted
         server.starttls(context=context) # Secure the connection
         server.ehlo() # Can be omitted
-        print("haciendo Loggin")
         server.login(sender_email, password)
         for mail in e:
             server.sendmail(me, mail, msg.as_string())

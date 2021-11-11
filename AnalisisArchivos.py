@@ -28,7 +28,6 @@ def EscaneoDeArchivos(Direcotrio):
             vt = VirusTotalPublicApi(API_KEY)
 
             respuesta = vt.get_file_report(hash_Archivo)
-            print(json.dumps(respuesta, sort_keys=False, indent=4))
 
             if respuesta['response_code'] == 200:
                 if respuesta['results']['response_code'] == 0:
