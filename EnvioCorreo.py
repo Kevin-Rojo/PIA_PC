@@ -19,7 +19,7 @@ def EnvioCorreo(dest):
     with open("Config.txt") as f:
         lineas = f.readlines()
 
-    m=open(lineas[2].split(":")[1],"rb")
+    m=open(lineas[2].split(":")[1][:-1],"rb")
 
     sender_email=lineas[0].split(":")[1]
     password=decriptPassword(lineas[1].split(":")[1])

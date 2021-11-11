@@ -15,9 +15,10 @@ from requests.models import cookiejar_from_dict
 
 #Hacemos un request a la url introduccida obligatoriamente por el argumento
 def AnalisisCorreos(url):
+    print(url)
     req = requests.get(url)
     if req.status_code != 200:
-        exit()
+        print("error en en la peticion a " + url)
 
     # Se utilizan las expresiones regulares para la busqueda de correos
     RegEx = "[a-z0-9\.\-+_]+@[a-z0-9\.\-+_]+\.[a-z]+"

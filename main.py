@@ -37,6 +37,16 @@ def status_port(ip,ports):
         print(res)
 
 
+def menu():
+    print("----------Herramientas de CiberSeguridad-----------------")
+    print("1. Envio de Correos")
+    print("2. Descarga de documentos")
+    print("3. Busqueda de correos")
+    print("4. Analisis de Archivos")
+    print("5. Analisis de Puertos")
+    print("6. Salir")
+
+
 if __name__ == "__main__":
 
     description = """Metodos de Ejeccion:
@@ -94,8 +104,31 @@ if __name__ == "__main__":
 
         validateMenu=False
     elif params.mode=="Auto" and params.script=="all":
+        #se lee el archivo de configuracion
+        with open("Config.txt") as f:
+            lineas = f.readlines()
+        
+        #se asigna el valor a las variables que serviran para la ejecucion del codigo
+        
+        #Separa la informacion importante del archivo de configuracion
+        #Se usa .split para separar la informacion del :
+        #En algunos casos se utilisa [:-1] para quitar el salto de linea que queda en el texto
+        ip=lineas[4].split(":")[1][:-1]
+        port=lineas[5].split(":")[1].split(",")
+        ports=[]
+        for p in port:
+            ports.append(p[:-1])
+        dest=lineas[3].split(",")
+        FilePath=lineas[8].split(":")[1]
+        url=lineas[6].split(":")[1]+":"+lineas[6].split(":")[2][:-1]
+        dir=lineas[7].split(":")[1][:-1]
 
-        status_port(params.ip,params.port)
+
+        EnvioCorreo.EnvioCorreo(dest)
+        DocumentGatering.GetWebDcumentsListURL(FilePath)
+        BusquedaCorreosDoc.AnalisisCorreos(url)
+        AnalisisArchivos.EscaneoDeArchivos(dir)
+        status_port(ip,ports)
 
         validateMenu=False
     elif params.mode=="Manual":
@@ -111,22 +144,24 @@ if __name__ == "__main__":
             validateOpcion=True
             while validateOpcion:
                 try:
-                    opcion =  int(input("Que script desea ejecutar"))
+                    menu()
+                    opcion =  int(input("Script: "))
                     if(opcion==1 or opcion==2 or opcion==3 or opcion==4 or opcion==5 or opcion==6 or opcion==7):
                         print(opcion)
                         validateOpcion=False
                 except:
-                    print("opcion incorrecta seleciones un numero entero del 1 al 7")
+                    print("opcion incorrecta selecione un numero entero del 1 al 6")
 
-            if opcion==1 :
-                print("opcion 1")
-                #inicio de opcion 1
-
+            if opcion==1 :                
+                dest=input("Ingresa el correo destino: ")
+                EnvioCorreo.EnvioCorreo(dest)
                 validateMenu=retryMenu()
             elif opcion==2:
-                print("opcion 2")
-                #inicio de opcion 2
-
+                url=input("ingrese una URL para buscar:")
+                try:
+                    DocumentGatering.GetWebDcumentsURL(url)
+                except Exception as e:
+                    print("A courrido un error: " + str(e))
                 validateMenu=retryMenu()
             elif opcion==3:
                 print("opcion 3")
@@ -146,14 +181,10 @@ if __name__ == "__main__":
 
                 validateMenu=retryMenu()
             elif opcion==6:
-                print("opcion 6")
-                #inicio de opcion 6
-
-                validateMenu=retryMenu()
-            elif opcion==7:
                 print("Saliendo...")
                 validateMenu=False
+
     except Exception as e:
-        print("MODO DE EJECUCION INCORRECTO!")
+        print("Lo sentimos ha ocurrido un error: "+ str(e))
         print(description)
         input("Presione cualquier tecla para continuar")

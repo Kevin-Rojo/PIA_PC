@@ -2,8 +2,8 @@ user:ksrojo31@gmail.com
 password:dHJobnByYW5mdmN3d3hobQ==
 mensaje:mail.html
 kevn.rojoor@gmail.com,ksrojo31@gmail.com
-Host:
-Ports:
+Host:10.0.0.1
+Ports:8080
 url_Busqueda_Correos:https://github.com/Kevin-Rojo/PIA_PC/blob/main/README.md
-Carpeta_Analisis_Archivos:ArchivosDePrueba\\
+Carpeta_Analisis_Archivos:ArchivosDePrueba\
 Archivo_Lista_Urls:listaUrls.txt

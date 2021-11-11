@@ -2,11 +2,7 @@
 
 ## Table of Contents
 1. [Informacion General](#general-info)
-1. [Ejemplos de Uso](#ejemplos)
-1. [Herramientas](#general-info)
-2. [Technologies](#technologies)
-3. [Installation](#installation)
-4. [Collaboration](#collaboration)
+1. [Ejemplos de Uso](#ejemplos)s
 5. [Contacto](#contacto)
 
 ## Informacion General
